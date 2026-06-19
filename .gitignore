@@ -1,0 +1,60 @@
+# =========================
+# Dependencies
+# =========================
+node_modules/
+
+# =========================
+# Build output
+# =========================
+dist/
+
+# =========================
+# Logs
+# =========================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.local
+.env.*.local
+
+# =========================
+# OS generated files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# TypeScript
+# =========================
+*.tsbuildinfo
+
+# =========================
+# Test / coverage output
+# =========================
+coverage/
+
+# =========================
+# Foundry VTT (local dev only)
+# =========================
+# Do NOT commit your local Foundry data folder
+Data/
+worlds/
+packs/
+
+# =========================
+# Misc temp files
+# =========================
+*.tmp
+*.temp
