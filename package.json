@@ -1,0 +1,34 @@
+{
+  "name": "foundryvtt-pf2e-harvesting",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "dev": "vite build --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ajohn10/foundryvtt-pf2e-harvesting.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Ajohn10/foundryvtt-pf2e-harvesting/issues"
+  },
+  "homepage": "https://github.com/Ajohn10/foundryvtt-pf2e-harvesting#readme",
+  "devDependencies": {
+    "@league-of-foundry-developers/foundry-vtt-types": "^13.346.0-beta.20250812191140",
+    "@types/jquery": "^4.0.1",
+    "@types/node": "^25.9.3",
+    "@typescript-eslint/eslint-plugin": "^8.61.1",
+    "@typescript-eslint/parser": "^8.61.1",
+    "eslint": "^10.5.0",
+    "sass": "^1.101.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.16"
+  }
+}
