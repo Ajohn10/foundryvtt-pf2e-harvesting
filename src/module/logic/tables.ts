@@ -25,20 +25,6 @@ export function getMaterialsForTraits(traits: string[]): string[] {
   return pool.size > 0 ? Array.from(pool) : ["Monster Material"];
 }
 
-export function getPartValueByLevel(level: number): number {
-  if (level <= 1) return 1;
-  if (level <= 3) return 2;
-  if (level <= 5) return 5;
-  if (level <= 7) return 10;
-  if (level <= 9) return 15;
-  if (level <= 11) return 25;
-  if (level <= 13) return 40;
-  if (level <= 15) return 50;
-  if (level <= 17) return 100;
-  if (level <= 19) return 200;
-  return 500;
-}
-
 const PF2E_LEVEL_DCS: Record<number, number> = {
   [-1]: 13,
   0: 14,

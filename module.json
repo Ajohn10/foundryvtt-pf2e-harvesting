@@ -2,7 +2,7 @@
   "id": "pf2e-monster-harvesting",
   "title": "PF2e Monster Harvesting",
   "description": "Lightweight monster harvesting rules for Pathfinder 2e.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "authors": [
     {
       "name": "Adam Johnson"

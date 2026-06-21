@@ -1,5 +1,6 @@
 import { determineDegreeOfSuccess, getHarvestOutcome } from "./degreeOfSuccess";
-import { getMaterialsForTraits, getPartValueByLevel, getPf2eLevelDc } from "./tables";
+import { getHarvestValue } from "../config/wealth";
+import { getMaterialsForTraits, getPf2eLevelDc } from "./tables";
 import type { HarvestResult, HarvestSkillSlug } from "./types";
 
 type SkillMap = Record<string, { mod?: number }>;
@@ -41,7 +42,7 @@ export async function executeHarvest(actor: Actor, performerId: string, skill: H
   const degree = determineDegreeOfSuccess({ total, d20, dc });
   const outcome = getHarvestOutcome(degree);
   const materialPool = getMaterialsForTraits(traits);
-  const partValue = getPartValueByLevel(level);
+  const partValue = getHarvestValue(level);
 
   const materials: string[] = [];
   for (let index = 0; index < outcome.partCount; index += 1) {
