@@ -17,6 +17,11 @@ export interface HarvestPromptResult {
   skill: HarvestSkillSlug;
 }
 
+export interface HarvestPromptOptions {
+  preferredPerformerId?: string;
+  performerIds?: string[];
+}
+
 const SKILL_OPTIONS: SkillOption[] = [
   { slug: "survival", label: "Survival", isDefault: true },
   { slug: "crafting", label: "Crafting", isDefault: true },
@@ -26,16 +31,22 @@ const SKILL_OPTIONS: SkillOption[] = [
   { slug: "religion", label: "Religion", isDefault: false }
 ];
 
-export async function promptHarvest(creatureName: string): Promise<HarvestPromptResult | null> {
+export async function promptHarvest(creatureName: string, options: HarvestPromptOptions = {}): Promise<HarvestPromptResult | null> {
   return new Promise<HarvestPromptResult | null>((resolve) => {
     let settled = false;
-    const performerOptions = getPerformerOptions();
+    const performerOptions = getPerformerOptions(options);
+    if (performerOptions.length === 0) {
+      ui.notifications?.warn("No valid harvester actors available.");
+      resolve(null);
+      return;
+    }
+
     const performerMarkup = performerOptions.map((option) => {
       const selected = option.isDefault ? " selected" : "";
       const tag = option.isDefault ? " (selected)" : "";
       return `<option value="${option.id}"${selected}>${option.label}${tag}</option>`;
     }).join("");
-    const options = SKILL_OPTIONS.map((option) => {
+    const skillOptionsMarkup = SKILL_OPTIONS.map((option) => {
       const selected = option.isDefault ? " selected" : "";
       const tag = option.isDefault ? " (default)" : "";
       return `<option value="${option.slug}"${selected}>${option.label}${tag}</option>`;
@@ -51,7 +62,7 @@ export async function promptHarvest(creatureName: string): Promise<HarvestPrompt
           </div>
           <div class="form-group">
             <label for="pf2e-harvest-skill">Skill</label>
-            <select id="pf2e-harvest-skill" name="skill">${options}</select>
+            <select id="pf2e-harvest-skill" name="skill">${skillOptionsMarkup}</select>
           </div>
         </form>
       `,
@@ -86,18 +97,19 @@ export async function promptHarvest(creatureName: string): Promise<HarvestPrompt
   });
 }
 
-function getPerformerOptions(): PerformerOption[] {
+function getPerformerOptions(options: HarvestPromptOptions): PerformerOption[] {
   const actors = game.actors?.contents ?? [];
-  const defaultActorId = game.user?.character?.id;
+  const defaultActorId = options.preferredPerformerId ?? game.user?.character?.id;
+  const performerFilter = options.performerIds ? new Set(options.performerIds) : null;
 
-  return actors
+  const rows = actors
+    .filter((actor) => performerFilter ? performerFilter.has(actor.id) : true)
     .map((actor) => {
       const type = getActorType(actor);
       return {
         id: actor.id,
         type,
-        label: `${actor.name ?? "Unnamed Actor"} (${type})`,
-        isDefault: actor.id === defaultActorId
+        label: `${actor.name ?? "Unnamed Actor"} (${type})`
       };
     })
     .filter((actor) => actor.type === "character" || actor.type === "npc")
@@ -107,8 +119,15 @@ function getPerformerOptions(): PerformerOption[] {
 
       if (leftRank !== rightRank) return leftRank - rightRank;
       return left.label.localeCompare(right.label);
-    })
-    .map(({ id, label, isDefault }) => ({ id, label, isDefault }));
+    });
+
+  const resolvedDefaultId = rows.some((row) => row.id === defaultActorId) ? defaultActorId : rows[0]?.id;
+
+  return rows.map(({ id, label }) => ({
+    id,
+    label,
+    isDefault: id === resolvedDefaultId
+  }));
 }
 
 function getActorType(actor: Actor): string {

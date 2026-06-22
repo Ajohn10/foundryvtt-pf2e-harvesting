@@ -1,6 +1,4 @@
-import { executeHarvest } from "../logic/harvest";
-import { postHarvestChatMessage } from "../ui/chat";
-import { promptHarvest } from "../ui/harvestDialog";
+import { isNpcActor, startHarvestWorkflow } from "../ui/harvestWorkflow";
 
 const HARVEST_BUTTON_CLASS = "pf2e-monster-harvest-button";
 
@@ -28,24 +26,13 @@ async function addHarvestButton(app: SheetAppLike, html: JQuery, _data: unknown)
 
   const button = document.createElement("a");
   button.className = `header-button control ${HARVEST_BUTTON_CLASS}`;
-  button.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i>Harvest ';
+  button.innerHTML = '<i class="fa-solid fa-drumstick-bite"></i>Harvest ';
 
   button.addEventListener("click", async () => {
-    const promptResult = await promptHarvest(actor.name ?? "Creature");
-    if (!promptResult) return;
-
-    const result = await executeHarvest(actor, promptResult.performerId, promptResult.skill);
-    if (!result) return;
-
-    await postHarvestChatMessage(result);
+    await startHarvestWorkflow(actor);
   });
 
   target.parentElement?.insertBefore(button, target);
-}
-
-function isNpcActor(actor: Actor): boolean {
-  const typed = actor as { type?: string };
-  return typed.type === "npc";
 }
 
 function findButtonTarget(root: HTMLElement): HTMLElement | null {
