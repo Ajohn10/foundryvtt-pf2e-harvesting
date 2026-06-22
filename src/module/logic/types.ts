@@ -21,6 +21,7 @@ export interface HarvestResult {
   rollTotal: number;
   d20: number;
   degree: DegreeOfSuccess;
+  matchedTraits: string[];
   materials: string[];
   totalValue: number;
 }

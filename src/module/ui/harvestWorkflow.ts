@@ -1,4 +1,5 @@
 import { executeHarvest } from "../logic/harvest";
+import { createOrUpdateHarvestInventoryItem } from "./harvestInventory";
 import { postHarvestChatMessage } from "./chat";
 import { promptHarvest } from "./harvestDialog";
 
@@ -23,6 +24,7 @@ export async function startHarvestWorkflow(targetActor: Actor, token?: Token): P
   const result = await executeHarvest(targetActor, promptResult.performerId, promptResult.skill);
   if (!result) return;
 
+  await createOrUpdateHarvestInventoryItem(promptResult.performerId, result);
   await postHarvestChatMessage(result);
 }
 

@@ -1,6 +1,6 @@
 import { determineDegreeOfSuccess, getHarvestOutcome } from "./degreeOfSuccess";
 import { getHarvestValue } from "../config/wealth";
-import { getMaterialsForTraits, getPf2eLevelDc } from "./tables";
+import { getMatchedHarvestTraits, getMaterialsForTraits, getPf2eLevelDc } from "./tables";
 import type { HarvestResult, HarvestSkillSlug } from "./types";
 
 type SkillMap = Record<string, { mod?: number }>;
@@ -26,6 +26,7 @@ export async function executeHarvest(actor: Actor, performerId: string, skill: H
   const target = actor as ActorWithPf2eFields;
   const level = Number(target.system?.details?.level?.value ?? 0);
   const traits = target.system?.traits?.value ?? [];
+  const matchedTraits = getMatchedHarvestTraits(traits);
   const dc = getPf2eLevelDc(level);
 
   const harvester = game.actors?.get(performerId);
@@ -61,6 +62,7 @@ export async function executeHarvest(actor: Actor, performerId: string, skill: H
     rollTotal: total,
     d20,
     degree,
+    matchedTraits,
     materials,
     totalValue
   };

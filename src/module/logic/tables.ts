@@ -1,13 +1,64 @@
 const TRAIT_MATERIALS: Record<string, string[]> = {
-  animal: ["Hide", "Tooth", "Claw"],
-  beast: ["Hide", "Bone", "Organ"],
-  dragon: ["Scale", "Fang", "Heartblood"],
-  undead: ["Bone", "Grave Dust"],
-  construct: ["Gear", "Crystal", "Core"],
-  elemental: ["Core", "Essence"],
-  fiend: ["Horn", "Ichor", "Essence"],
-  plant: ["Sap", "Fiber", "Blossom"],
-  aberration: ["Eye", "Tentacle", "Brain Tissue"]
+  // Core Creature Types
+  animal: ["Hide", "Tooth", "Claw", "Pelt", "Sinew"],
+  beast: ["Hide", "Bone", "Organ", "Fang", "Hide Scrap"],
+  humanoid: ["Bone", "Blood", "Hair", "Organ"],
+  dragon: ["Scale", "Fang", "Heartblood", "Draconic Hide", "Eye"],
+  undead: ["Bone", "Grave Dust", "Ectoplasm", "Rot Ichor"],
+  construct: ["Gear", "Crystal", "Core", "Metal Plating"],
+  elemental: ["Core", "Essence", "Condensed Energy"],
+  fiend: ["Horn", "Ichor", "Essence", "Hellfire Residue"],
+  celestial: ["Radiant Feather", "Divine Essence", "Halo Fragment"],
+  monitor: ["Planar Dust", "Balanced Essence"],
+  fey: ["Glamour Dust", "Fey Wing", "Whimsy Essence"],
+  ooze: ["Slime", "Gel Core", "Acidic Residue"],
+  plant: ["Sap", "Fiber", "Blossom", "Root", "Spore"],
+  fungus: ["Spore", "Mycelium", "Fungal Sap"],
+  aberration: ["Eye", "Tentacle", "Brain Tissue", "Strange Organ"],
+
+  // Magical / Tradition Traits
+  arcane: ["Arcane Residue", "Mana Crystal"],
+  divine: ["Sacred Oil", "Blessed Essence"],
+  occult: ["Mind Essence", "Whisper Fragment"],
+  primal: ["Wild Essence", "Spirit Sap"],
+
+  // Energy Traits
+  fire: ["Cinder", "Ember Core", "Burning Essence"],
+  cold: ["Frozen Core", "Frost Crystal", "Rime Dust"],
+  electricity: ["Storm Core", "Charged Filament"],
+  acid: ["Corrosive Slime", "Acidic Gland"],
+  sonic: ["Resonant Crystal", "Echo Shard"],
+  force: ["Force Residue", "Arcane Pressure Node"],
+  poison: ["Venom Sac", "Toxic Ichor"],
+  mental: ["Dream Fragment", "Psychic Residue"],
+  negative: ["Void Essence", "Necrotic Dust"],
+  positive: ["Vital Spark", "Life Essence"],
+
+  // Physical / Body Traits
+  aquatic: ["Scale", "Gill", "Pearl"],
+  amphibious: ["Moist Hide", "Gill Fragment"],
+  insect: ["Chitin", "Mandible", "Wing"],
+  swarm: ["Swarm Husk", "Hive Residue"],
+  reptile: ["Scale", "Venom Gland"],
+  avian: ["Feather", "Beak Fragment", "Talons"],
+
+  // Planar / Rare Traits
+  air: ["Bottled Breeze", "Sky Essence"],
+  earth: ["Stone Core", "Crystal Shard"],
+  water: ["Pure Droplet", "Tidal Essence"],
+  metal: ["Ore Fragment", "Metallic Core"],
+  wood: ["Living Bark", "Ancient Sap"],
+
+  // Rare Creature Tags
+  incorporeal: ["Ectoplasm", "Phantom Essence"],
+  spirit: ["Spirit Fragment", "Ancestor Ash"],
+  shadow: ["Shadow Essence", "Umbral Dust"],
+  time: ["Temporal Shard"],
+  dream: ["Dream Vapor"],
+  illusion: ["Mirage Dust"],
+
+  // Fallback Generic
+  magical: ["Magical Residue", "Enchanted Fragment"]
 };
 
 export function getMaterialsForTraits(traits: string[]): string[] {
@@ -23,6 +74,16 @@ export function getMaterialsForTraits(traits: string[]): string[] {
   }
 
   return pool.size > 0 ? Array.from(pool) : ["Monster Material"];
+}
+
+export function getMatchedHarvestTraits(traits: string[]): string[] {
+  const matchedTraits = new Set<string>();
+
+  for (const trait of traits) {
+    if (TRAIT_MATERIALS[trait]) matchedTraits.add(trait);
+  }
+
+  return Array.from(matchedTraits);
 }
 
 const PF2E_LEVEL_DCS: Record<number, number> = {
