@@ -20,10 +20,12 @@ export async function postHarvestChatMessage(result: HarvestResult): Promise<voi
     </section>
   `;
 
-  await ChatMessage.create({
+  const chatData = ChatMessage.applyRollMode({
     speaker: ChatMessage.getSpeaker(),
     content
-  });
+  }, "roll");
+
+  await ChatMessage.create(chatData);
 }
 
 function capitalize(value: string): string {
